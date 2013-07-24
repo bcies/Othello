@@ -35,6 +35,7 @@ public class Board {
 		int newX;
 		int newY;
 		int nextSpace;
+		boolean captureFlag = false;
 		int opposite = opposite(colorToPlay);
 		List<Integer> capturedStones = new ArrayList<Integer>();
 		// Up
@@ -45,9 +46,9 @@ public class Board {
 			while (newY <= 7) {
 				nextSpace = board[pointToIndex(x, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(x, newY));
@@ -55,10 +56,14 @@ public class Board {
 				newY++;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 		
 		// UpR
 
@@ -70,9 +75,9 @@ public class Board {
 			while ((newX <= 7) && (newY <= 7)) {
 				nextSpace = board[pointToIndex(newX, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, newY));
@@ -81,10 +86,14 @@ public class Board {
 				newY++;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 		
 		// R
 
@@ -94,9 +103,9 @@ public class Board {
 			while (newX <= 7) {
 				nextSpace = board[pointToIndex(newX, y)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, y));
@@ -104,10 +113,14 @@ public class Board {
 				newX++;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 
 		// DoR
 
@@ -119,9 +132,9 @@ public class Board {
 			while ((newX <= 7) && (newY >= 0)) {
 				nextSpace = board[pointToIndex(newX, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, newY));
@@ -130,10 +143,14 @@ public class Board {
 				newY--;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 
 		// Do
 
@@ -143,9 +160,9 @@ public class Board {
 			while (newY >= 0) {
 				nextSpace = board[pointToIndex(x, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(x, newY));
@@ -153,10 +170,14 @@ public class Board {
 				newY--;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 
 		// DoL
 
@@ -168,9 +189,9 @@ public class Board {
 			while ((newX >= 0) && (newY >= 0)) {
 				nextSpace = board[pointToIndex(newX, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, newY));
@@ -179,10 +200,14 @@ public class Board {
 				newY--;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 
 		// L
 
@@ -192,9 +217,9 @@ public class Board {
 			while (newX >= 0) {
 				nextSpace = board[pointToIndex(newX, y)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, y));
@@ -202,10 +227,14 @@ public class Board {
 				newX--;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
 		capturedStones.clear();
+		captureFlag = false;
 
 		// UpL
 
@@ -217,9 +246,9 @@ public class Board {
 			while ((newX >= 0) && (newY <= 7)) {
 				nextSpace = board[pointToIndex(newX, newY)];
 				if (nextSpace == colorToPlay) {
+					captureFlag = true;
 					break;
 				} else if (nextSpace == VACANT) {
-					capturedStones.clear();
 					break;
 				} else {
 					capturedStones.add(pointToIndex(newX, newY));
@@ -228,10 +257,12 @@ public class Board {
 				newY++;
 			}
 		}
+		if(!captureFlag) {
+			capturedStones.clear();
+		}
 		for(int i : capturedStones) {
 			board[i] = colorToPlay;
 		}
-		capturedStones.clear();
 	}
 
 	protected void checkLegalMoves(int color) {
@@ -243,7 +274,7 @@ public class Board {
 		}
 	}
 
-	public String colorToString(int color) {
+	public static String colorToString(int color) {
 		if (color == BLACK) {
 			return "Black";
 		} else if (color == WHITE) {
@@ -285,6 +316,17 @@ public class Board {
 			}
 		}
 		return score;
+	}
+	
+	public int getWinner() {
+		int blackScore = getScore(BLACK);
+		int whiteScore = getScore(WHITE);
+		if(blackScore > whiteScore) {
+			return BLACK;
+		} else if (whiteScore > blackScore) {
+			return WHITE;
+		}
+		return -1;
 	}
 
 	public void initializeBoard() {
@@ -434,7 +476,7 @@ public class Board {
 		return false;
 	}
 
-	public String indexToString(int index) {
+	public static String indexToString(int index) {
 		int row = (index / BOARD_WIDTH) + 1;
 		int column = (index % BOARD_WIDTH);
 		String string = "";
@@ -471,6 +513,20 @@ public class Board {
 	public boolean play(int index) {
 		return play(index, colorToPlay);
 	}
+	
+	public boolean playoutMove(int index) {
+		if(board[index] != VACANT) {
+			return false;
+		}
+		board[index] = colorToPlay;
+		capture(index);
+		if (colorToPlay == BLACK) {
+			colorToPlay = WHITE;
+		} else {
+			colorToPlay = BLACK;
+		}
+		return true;
+	}
 
 	public boolean play(int index, int color) {
 		if (color == colorToPlay) {
@@ -492,11 +548,11 @@ public class Board {
 
 	}
 
-	public int pointToIndex(int x, int y) {
+	public static int pointToIndex(int x, int y) {
 		return x + y * BOARD_WIDTH;
 	}
 
-	public int stringToIndex(String string) {
+	public static int stringToIndex(String string) {
 		int column;
 		if (string.charAt(0) < 96) {
 			column = string.charAt(0) - 'A';
