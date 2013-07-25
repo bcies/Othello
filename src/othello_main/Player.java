@@ -6,23 +6,41 @@ public class Player {
 	
 	private double timePerMove;
 	private int turnPlayouts;
+	private int blocks;
+	private int threads;
 	
 	public Player(double timePerMove) {
 		this.timePerMove = timePerMove;
 		turnPlayouts = 0;
+		blocks = 0;
+		threads = 0;
 	}
 	
 	public int getBestMove(Board board, boolean showTree) {
 		turnPlayouts = 0;
 		SearchTree tree = new SearchTree();
-		tree.createRootNodes(board);
 		long currentTime = System.nanoTime();
 		long finishTime = (long) (timePerMove * 1000000000) + currentTime;
-		while (currentTime < finishTime) {
-			tree.expandTree(board);
-			turnPlayouts++;
-			currentTime = System.nanoTime();
+		
+		if (blocks == 0){
+			tree = new SearchTree();
+			tree.createRootNodes(board);
+			while (currentTime < finishTime) {
+				tree.expandTree(board);
+				turnPlayouts++;
+				currentTime = System.nanoTime();
+			}
+		} else {
+			CudaTree ctree = new CudaTree();
+			ctree.createRootNodes(board);
+			while (currentTime < finishTime){
+				ctree.expandTree(board, blocks, threads);
+				turnPlayouts++;
+				currentTime = System.nanoTime();
+			}
+			tree = ctree;
 		}
+		
 		ArrayList<SearchNode> nodes = tree.getNodes();
 		int bestNodeIndex = 0;
 		for (int i = 1; i < nodes.size(); i++) {
@@ -39,6 +57,11 @@ public class Player {
 	
 	public int getPlayouts() {
 		return turnPlayouts;
+	}
+	
+	public void setCuda(int blocks, int threads){
+		this.blocks = blocks;
+		this.threads = threads;
 	}
 	
 	public boolean setTimePerMove(double time) {

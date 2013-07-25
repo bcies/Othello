@@ -19,9 +19,12 @@ public class Othello {
 	private static boolean autogame;
 
 	public static void main(String args[]) {
+		CudaNode.prepareGPU();
 		autogame = false;
 		double timePerMove = 5.0;
-		Player player = new Player(timePerMove);
+		Player black = new Player(timePerMove);
+		black.setCuda(14, 512);
+		Player white = new Player(timePerMove);
 		boolean startGame = false;
 		Scanner in = new Scanner(System.in);
 		System.out
@@ -33,7 +36,7 @@ public class Othello {
 				runExperiment();
 			} else if (command.contains("game")) {
 				startGame = true;
-				runGame(player, player);
+				runGame(black, white);
 			}
 		}
 	}
