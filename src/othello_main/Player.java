@@ -28,7 +28,7 @@ public class Player {
 			tree.createRootNodes(board);
 			while (currentTime < finishTime) {
 				tree.expandTree(board);
-				turnPlayouts += blocksxthreads;
+				turnPlayouts++;
 				currentTime = System.nanoTime();
 			}
 		} else {
@@ -36,7 +36,7 @@ public class Player {
 			ctree.createRootNodes(board);
 			while (currentTime < finishTime){
 				ctree.expandTree(board, blocks, threads);
-				turnPlayouts++;
+				turnPlayouts += blocksxthreads;
 				currentTime = System.nanoTime();
 			}
 			tree = ctree;
