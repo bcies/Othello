@@ -134,8 +134,8 @@ public class Othello {
 
 	public static int runGame(Player black, Player white) {
 		Board board = new Board();
-		List<Integer> blackTurnPlayouts = new ArrayList<Integer>();
-		List<Integer> whiteTurnPlayouts = new ArrayList<Integer>();
+		List<Long> blackTurnPlayouts = new ArrayList<Long>();
+		List<Long> whiteTurnPlayouts = new ArrayList<Long>();
 		String command;
 		Scanner in = new Scanner(System.in);
 		StringTokenizer token;
@@ -160,7 +160,7 @@ public class Othello {
 						+ "'s turn:");
 			} else if (command.contains("genmove")) {
 				int playerMove;
-				int turnPlayout;
+				long turnPlayout;
 				boolean showTree = false;
 				if (command.contains("showtree")) {
 					showTree = true;
@@ -199,10 +199,10 @@ public class Othello {
 
 		double blackPlayoutSum = 0;
 		double whitePlayoutSum = 0;
-		for (Integer playouts : blackTurnPlayouts) {
+		for (Long playouts : blackTurnPlayouts) {
 			blackPlayoutSum += playouts;
 		}
-		for (Integer playouts : whiteTurnPlayouts) {
+		for (Long playouts : whiteTurnPlayouts) {
 			whitePlayoutSum += playouts;
 		}
 		System.out.println("Average black playouts per turn: "

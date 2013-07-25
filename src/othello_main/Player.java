@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 	
 	private double timePerMove;
-	private int turnPlayouts;
+	private long turnPlayouts;
 	private int blocks;
 	private int threads;
 	
@@ -17,6 +17,7 @@ public class Player {
 	}
 	
 	public int getBestMove(Board board, boolean showTree) {
+		int blocksxthreads = blocks * threads;
 		turnPlayouts = 0;
 		SearchTree tree = new SearchTree();
 		long currentTime = System.nanoTime();
@@ -27,7 +28,7 @@ public class Player {
 			tree.createRootNodes(board);
 			while (currentTime < finishTime) {
 				tree.expandTree(board);
-				turnPlayouts++;
+				turnPlayouts += blocksxthreads;
 				currentTime = System.nanoTime();
 			}
 		} else {
@@ -55,7 +56,7 @@ public class Player {
 		return nodes.get(bestNodeIndex).getMove();
 	}
 	
-	public int getPlayouts() {
+	public long getPlayouts() {
 		return turnPlayouts;
 	}
 	
