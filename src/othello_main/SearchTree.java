@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class SearchTree {
 
-	ArrayList<SearchNode> children;
-	private int totalPlayouts;
+	protected ArrayList<SearchNode> children;
+	protected int totalPlayouts;
 	
 	public SearchTree() {
 		children = new ArrayList<SearchNode>();

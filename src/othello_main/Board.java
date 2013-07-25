@@ -318,6 +318,10 @@ public class Board {
 		return score;
 	}
 	
+	public int getPoint(int index){
+		return board[index];
+	}
+	
 	public int getWinner() {
 		int blackScore = getScore(BLACK);
 		int whiteScore = getScore(WHITE);
