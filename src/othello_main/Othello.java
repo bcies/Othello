@@ -44,8 +44,12 @@ public class Othello {
 	public static void runExperiment() {
 		autogame = true;
 		int totalGames;
+		int blocks;
+		int threads;
 		double player1TimePerMove;
 		double player2TimePerMove;
+		boolean player1Cuda;
+		boolean player2Cuda;
 		String settingsDescription;
 
 		Properties defaultProp = new Properties();
@@ -72,10 +76,20 @@ public class Othello {
 				.getProperty("blktimepermove"));
 		player2TimePerMove = Double.parseDouble(userProp
 				.getProperty("whttimepermove"));
+		player1Cuda = Boolean.parseBoolean(userProp.getProperty("blkCuda"));
+		player2Cuda = Boolean.parseBoolean(userProp.getProperty("whtCuda"));
+		blocks = Integer.parseInt(userProp.getProperty("blocks"));
+		threads = Integer.parseInt(userProp.getProperty("threads"));
 		settingsDescription = userProp.getProperty("settingsdescription");
 
 		Player black = new Player(player1TimePerMove);
+		if (player1Cuda){
+			black.setCuda(blocks, threads);
+		}
 		Player white = new Player(player2TimePerMove);
+		if (player2Cuda){
+			white.setCuda(blocks, threads);
+		}
 		int blacksum = 0;
 		int firstties = 0;
 		int win;
@@ -90,7 +104,13 @@ public class Othello {
 		}
 
 		black = new Player(player2TimePerMove);
+		if (player2Cuda){
+			black.setCuda(blocks, threads);
+		}
 		white = new Player(player1TimePerMove);
+		if (player1Cuda){
+			white.setCuda(blocks, threads);
+		}
 		int whitesum = 0;
 		int secondties = 0;
 		for (int i = 0; i < (totalGames / 2); i++) {
