@@ -153,6 +153,16 @@ public class Othello {
 				if (!board.play(Board.stringToIndex(token.nextToken()))) {
 					System.out.println("Invalid move.\n");
 				}
+			} else if(command.contains("settime ")) {
+				token = new StringTokenizer(command, " ");
+				token.nextToken();
+				double time = Double.parseDouble(token.nextToken());
+				if (black.setTimePerMove(time) && white.setTimePerMove(time)) {
+					System.out.println("Time per move set to " + time
+							+ " seconds.");
+				} else {
+					System.out.println("Invalid time.");
+				}
 			} else if (command.contains("showboard")) {
 				System.out.println(board);
 				System.out.println("\n"
