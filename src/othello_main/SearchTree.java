@@ -62,7 +62,6 @@ public class SearchTree {
 		for (SearchNode node : children) {
 			if (node.getPlayouts() != 0) {
 				s += node.toString(0);
-
 			}
 		}
 		return s;
