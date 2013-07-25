@@ -196,6 +196,9 @@ public class Othello {
 		} else {
 			System.out.println("It's a tie!");
 		}
+		
+		System.out.println("Black points: " + board.getScore(Board.BLACK));
+		System.out.println("White points: " + board.getScore(Board.WHITE));
 
 		double blackPlayoutSum = 0;
 		double whitePlayoutSum = 0;
