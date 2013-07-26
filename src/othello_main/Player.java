@@ -8,12 +8,14 @@ public class Player {
 	private long turnPlayouts;
 	private int blocks;
 	private int threads;
+	private boolean legal;
 	
-	public Player(double timePerMove) {
+	public Player(double timePerMove, boolean legal) {
 		this.timePerMove = timePerMove;
 		turnPlayouts = 0;
 		blocks = 0;
 		threads = 0;
+		this.legal = legal;
 	}
 	
 	public int getBestMove(Board board, boolean showTree) {
@@ -35,7 +37,7 @@ public class Player {
 			CudaTree ctree = new CudaTree();
 			ctree.createRootNodes(board);
 			while (currentTime < finishTime){
-				ctree.expandTree(board, blocks, threads);
+				ctree.expandTree(board, blocks, threads, legal);
 				turnPlayouts += blocksxthreads;
 				currentTime = System.nanoTime();
 			}

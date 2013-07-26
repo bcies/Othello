@@ -34,7 +34,7 @@ public class CudaNode extends SearchNode {
 	protected static CUfunction function;
 
 	/** Holds the playout function for multileaf parallelism */
-	protected static CUfunction functionMultiLeaf;
+	protected static CUfunction functionLegal;
 
 	/**
 	 * constructer for CudaNode
@@ -58,7 +58,7 @@ public class CudaNode extends SearchNode {
 	/**
 	 * Does a number of random playouts using leaf parallelism
 	 */
-	public double playout(Board board, int blocks, int threads) {
+	public double playout(Board board, int blocks, int threads, boolean legal) {
 		int blocksxthreads = blocks * threads;
 		int formerPlayouts = playouts;
 		playouts += blocksxthreads;
@@ -140,8 +140,13 @@ public class CudaNode extends SearchNode {
 				Pointer.to(d_wins));
 
 		// Call the kernel function.
-		cuLaunchKernel(function, blocks, 1, 1, threads, 1, 1, 0, null,
-				kernelParameters, null);
+		if (legal) {
+			cuLaunchKernel(functionLegal, blocks, 1, 1, threads, 1, 1, 0, null,
+					kernelParameters, null);
+		} else {
+			cuLaunchKernel(function, blocks, 1, 1, threads, 1, 1, 0, null,
+					kernelParameters, null);
+		}
 		cuCtxSynchronize();
 
 		cuMemcpyDtoH(Pointer.to(wins), d_wins, Sizeof.FLOAT);
@@ -192,9 +197,9 @@ public class CudaNode extends SearchNode {
 		function = new CUfunction();
 		cuModuleGetFunction(function, module, "playout");
 
-		// // Obtain a function pointer to the "playoutMultiLeaf" function.
-		// functionMultiLeaf = new CUfunction();
-		// cuModuleGetFunction(functionMultiLeaf, module, "playoutMultiLeaf");
+		// Obtain a function pointer to the "playoutMultiLeaf" function.
+		functionLegal = new CUfunction();
+		cuModuleGetFunction(functionLegal, module, "legalPlayout");
 
 	}
 
@@ -288,7 +293,8 @@ public class CudaNode extends SearchNode {
 	 * @param threads
 	 * @return the number of wins for the upper node
 	 */
-	public double traverseNode(Board board, int blocks, int threads) {
+	public double traverseNode(Board board, int blocks, int threads,
+			boolean legal) {
 		board.play(this.move);
 		double bestScore = -1;
 		int bestIndex = -1;
@@ -325,7 +331,7 @@ public class CudaNode extends SearchNode {
 		}
 		if (children.get(bestIndex).getPlayouts() == 0) {
 			CudaNode node = (CudaNode) children.get(bestIndex);
-			wins = node.playout(board, blocks, threads);
+			wins = node.playout(board, blocks, threads, legal);
 			int formerPlayouts = playouts;
 			playouts += blocksxthreads;
 			winRate = (formerPlayouts * winRate + wins) / (playouts);
@@ -333,9 +339,9 @@ public class CudaNode extends SearchNode {
 			return blocksxthreads - wins;
 		} else {
 			CudaNode node = (CudaNode) children.get(bestIndex);
-			wins = node.traverseNode(board, blocks, threads);
+			wins = node.traverseNode(board, blocks, threads, legal);
 			if (wins == -2) {
-				wins = this.traverseNode(board, blocks, threads);
+				wins = this.traverseNode(board, blocks, threads, legal);
 			}
 			int formerPlayouts = playouts;
 			playouts += blocksxthreads;

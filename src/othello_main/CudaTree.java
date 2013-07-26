@@ -15,7 +15,7 @@ public class CudaTree extends SearchTree{
 		}
 	}
 	
-	public void expandTree(Board board, int blocks, int threads) {
+	public void expandTree(Board board, int blocks, int threads, boolean legal) {
 		Board tempBoard = new Board();
 		tempBoard.copyBoard(board);
 		double bestScore = 0;
@@ -41,11 +41,11 @@ public class CudaTree extends SearchTree{
 
 		if (children.get(bestIndex).getPlayouts() == 0) {
 			CudaNode node = (CudaNode) children.get(bestIndex);
-			node.playout(tempBoard, blocks, threads);
+			node.playout(tempBoard, blocks, threads, legal);
 			totalPlayouts += blocks * threads;
 		} else {
 			CudaNode node = (CudaNode) children.get(bestIndex);
-			node.traverseNode(tempBoard, blocks, threads);
+			node.traverseNode(tempBoard, blocks, threads, legal);
 		}
 	}
 }

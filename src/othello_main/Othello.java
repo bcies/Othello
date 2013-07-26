@@ -22,9 +22,9 @@ public class Othello {
 		CudaNode.prepareGPU();
 		autogame = false;
 		double timePerMove = 2.0;
-		Player black = new Player(timePerMove);
+		Player black = new Player(timePerMove, false);
 		black.setCuda(14, 512);
-		Player white = new Player(timePerMove);
+		Player white = new Player(timePerMove, true);
 		boolean startGame = false;
 		Scanner in = new Scanner(System.in);
 		System.out
@@ -50,6 +50,8 @@ public class Othello {
 		double player2TimePerMove;
 		boolean player1Cuda;
 		boolean player2Cuda;
+		boolean player1Legal;
+		boolean player2Legal;
 		String settingsDescription;
 
 		Properties defaultProp = new Properties();
@@ -78,15 +80,17 @@ public class Othello {
 				.getProperty("whttimepermove"));
 		player1Cuda = Boolean.parseBoolean(userProp.getProperty("blkCuda"));
 		player2Cuda = Boolean.parseBoolean(userProp.getProperty("whtCuda"));
+		player1Legal = Boolean.parseBoolean(userProp.getProperty("blkLegal"));
+		player2Legal = Boolean.parseBoolean(userProp.getProperty("whtLegal"));
 		blocks = Integer.parseInt(userProp.getProperty("blocks"));
 		threads = Integer.parseInt(userProp.getProperty("threads"));
 		settingsDescription = userProp.getProperty("settingsdescription");
 
-		Player black = new Player(player1TimePerMove);
+		Player black = new Player(player1TimePerMove, player1Legal);
 		if (player1Cuda){
 			black.setCuda(blocks, threads);
 		}
-		Player white = new Player(player2TimePerMove);
+		Player white = new Player(player2TimePerMove, player2Legal);
 		if (player2Cuda){
 			white.setCuda(blocks, threads);
 		}
@@ -103,11 +107,11 @@ public class Othello {
 			}
 		}
 
-		black = new Player(player2TimePerMove);
+		black = new Player(player2TimePerMove, player1Legal);
 		if (player2Cuda){
 			black.setCuda(blocks, threads);
 		}
-		white = new Player(player1TimePerMove);
+		white = new Player(player1TimePerMove, player2Legal);
 		if (player1Cuda){
 			white.setCuda(blocks, threads);
 		}
