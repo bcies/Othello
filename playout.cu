@@ -19,6 +19,11 @@ extern "C" __global__ void playout(int *rands, int *numRands, int *board,
 		int n = rands[(blockIdx.x * (*numRands / blockDim.x) + count
 				+ threadIdx.x) % *numRands];
 		count += 1;
+
+		//Check if n is a legal move
+		//TODO
+
+
 		if (tempBoard[n] == 0) {
 			//play
 			tempBoard[n] = colorTP;
