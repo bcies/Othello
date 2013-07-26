@@ -69,12 +69,14 @@ public class CudaNode extends SearchNode {
 			finalNode = true;
 			if (winner == color) {
 				winRate = 1.0;
+				return 0;
 			}
 			if (winner == -1) {
 				// If the result is a tie.
 				winRate = 0.65;
+				return (int) (blocksxthreads * 0.65);
 			}
-			return winner;
+			return blocksxthreads;
 		}
 
 		// Get random numbers
@@ -155,7 +157,7 @@ public class CudaNode extends SearchNode {
 
 		winRate = (formerPlayouts * winRate + wins[0]) / (playouts * 1.0);
 		lastWin = wins[0] / (blocksxthreads);
-		return wins[0];
+		return blocksxthreads - wins[0];
 
 	}
 

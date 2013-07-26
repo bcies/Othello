@@ -21,7 +21,7 @@ public class Othello {
 	public static void main(String args[]) {
 		CudaNode.prepareGPU();
 		autogame = false;
-		double timePerMove = 2.0;
+		double timePerMove = 5.0;
 		Player black = new Player(timePerMove);
 		black.setCuda(14, 512);
 		Player white = new Player(timePerMove);
