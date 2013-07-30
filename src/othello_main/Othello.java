@@ -17,6 +17,8 @@ import java.util.StringTokenizer;
 public class Othello {
 
 	private static boolean autogame;
+	private static long blackPAverages;
+	private static long whitePAverages;
 
 	public static void main(String args[]) {
 		CudaNode.prepareGPU();
@@ -31,12 +33,17 @@ public class Othello {
 				.println("Run Experiment or Play Game?\n(Type experiment or game)");
 		while (!startGame) {
 			String command = in.nextLine();
+			blackPAverages = 0;
+			whitePAverages = 0;
 			if (command.contains("experiment")) {
 				startGame = true;
 				runExperiment();
 			} else if (command.contains("game")) {
 				startGame = true;
 				runGame(black, white);
+			} else if (command.contains("cuda")) {
+				startGame = true;
+				cudaExperiment();
 			}
 		}
 	}
@@ -151,6 +158,114 @@ public class Othello {
 		} catch (Exception e) {
 		}
 	}
+	
+	public static void cudaExperiment() {
+		autogame = true;
+		List<Integer> BlackWins = new ArrayList<Integer>();
+		List<Integer> WhiteWins = new ArrayList<Integer>();
+		List<Integer> Ties = new ArrayList<Integer>();
+		List<Long> BlackAvgPlayouts = new ArrayList<Long>();
+		List<Long> WhiteAvgPlayouts = new ArrayList<Long>();
+		
+		Player serial = new Player(8.0);
+			
+		for(int TPM = 1; TPM <= 8; TPM = TPM * 2) {
+			blackPAverages = 0;
+			whitePAverages = 0;
+			Player cuda = new Player(TPM);
+			int blacksum = 0;
+			int whitesum = 0;
+			int ties = 0;
+			int win;
+			for (int i = 0; i < 100; i++) {
+				System.out.println("\nGame number " + (i + 1)
+						+ "\nBlack Time: " + TPM + " seconds,\nWhite Time: 8 seconds.");
+				win = runGame(cuda, serial);
+				if (win == Board.BLACK) {
+					blacksum += 1;
+				} else if (win == Board.VACANT) {
+					ties += 1;
+				} else {
+					whitesum += 1;
+				}
+			}
+			BlackWins.add(blacksum);
+			WhiteWins.add(whitesum);
+			Ties.add(ties);
+			BlackAvgPlayouts.add(blackPAverages / 100);
+			WhiteAvgPlayouts.add(whitePAverages / 100);
+		}
+
+		System.out.println("\nBlack uses CUDA. White is a serial player.");
+		System.out.println("\nAll out of 100 games\n");
+		System.out.println("Black 1 second: ");
+		System.out.println("Black Wins: " + BlackWins.get(0));
+		System.out.println("White Wins: " + WhiteWins.get(0));
+		System.out.println("Ties: " + Ties.get(0));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(0));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(0));
+		System.out.println();
+		System.out.println("Black 2 seconds: ");
+		System.out.println("Black Wins: " + BlackWins.get(1));
+		System.out.println("White Wins: " + WhiteWins.get(1));
+		System.out.println("Ties: " + Ties.get(1));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(1));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(1));
+		System.out.println();
+		System.out.println("Black 4 seconds: ");
+		System.out.println("Black Wins: " + BlackWins.get(2));
+		System.out.println("White Wins: " + WhiteWins.get(2));
+		System.out.println("Ties: " + Ties.get(2));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(2));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(2));
+		System.out.println();
+		System.out.println("Black 8 seconds: ");
+		System.out.println("Black Wins: " + BlackWins.get(3));
+		System.out.println("White Wins: " + WhiteWins.get(3));
+		System.out.println("Ties: " + Ties.get(3));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(3));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(3));
+
+		try {
+			File file = new File("SerialResults.txt");
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			OutputStream outStream = new FileOutputStream(file);
+			Writer out = new OutputStreamWriter(outStream);
+			out.write("Black uses CUDA. White is a serial player.");
+			out.write("\nAll out of 100 games\n");
+			out.write("\nBlack 1 second: ");
+			out.write("\nBlack Wins: " + BlackWins.get(0));
+			out.write("\nWhite Wins: " + WhiteWins.get(0));
+			out.write("\nTies: " + Ties.get(0));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(0));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(0));
+			out.write("\n");
+			out.write("\nBlack 2 seconds: ");
+			out.write("\nBlack Wins: " + BlackWins.get(1));
+			out.write("\nWhite Wins: " + WhiteWins.get(1));
+			out.write("\nTies: " + Ties.get(1));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(1));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(1));
+			out.write("\n");
+			out.write("\nBlack 4 seconds: ");
+			out.write("\nBlack Wins: " + BlackWins.get(2));
+			out.write("\nWhite Wins: " + WhiteWins.get(2));
+			out.write("\nTies: " + Ties.get(2));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(2));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(2));
+			out.write("\n");
+			out.write("\nBlack 8 seconds: ");
+			out.write("\nBlack Wins: " + BlackWins.get(3));
+			out.write("\nWhite Wins: " + WhiteWins.get(3));
+			out.write("\nTies: " + Ties.get(3));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(3));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(3));
+			out.close();
+		} catch (Exception e) {
+		}
+	}
 
 	public static int runGame(Player black, Player white) {
 		Board board = new Board();
@@ -238,10 +353,14 @@ public class Othello {
 		for (Long playouts : whiteTurnPlayouts) {
 			whitePlayoutSum += playouts;
 		}
+		long blackPAverage = (long) (blackPlayoutSum / blackTurnPlayouts.size());
+		long whitePAverage = (long) (whitePlayoutSum / whiteTurnPlayouts.size());
+		blackPAverages += blackPAverage;
+		whitePAverages += whitePAverage;
 		System.out.println("Average black playouts per turn: "
-				+ (int) (blackPlayoutSum / blackTurnPlayouts.size()));
+				+ blackPAverage);
 		System.out.println("Average white playouts per turn: "
-				+ (int) (whitePlayoutSum / whiteTurnPlayouts.size()));
+				+ whitePAverage);
 		return winner;
 	}
 
