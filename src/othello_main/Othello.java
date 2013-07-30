@@ -17,6 +17,8 @@ import java.util.StringTokenizer;
 public class Othello {
 
 	private static boolean autogame;
+	private static long blackPAverages;
+	private static long whitePAverages;
 
 	public static void main(String args[]) {
 		CudaNode.prepareGPU();
@@ -31,12 +33,17 @@ public class Othello {
 				.println("Run Experiment or Play Game?\n(Type experiment or game)");
 		while (!startGame) {
 			String command = in.nextLine();
+			blackPAverages = 0;
+			whitePAverages = 0;
 			if (command.contains("experiment")) {
 				startGame = true;
 				runExperiment();
 			} else if (command.contains("game")) {
 				startGame = true;
 				runGame(black, white);
+			} else if (command.contains("serial")) {
+				startGame = true;
+				serialExperiment();
 			}
 		}
 	}
@@ -151,6 +158,229 @@ public class Othello {
 		} catch (Exception e) {
 		}
 	}
+	
+	public static void serialExperiment() {
+		autogame = true;
+		List<Integer> BlackWins = new ArrayList<Integer>();
+		List<Integer> WhiteWins = new ArrayList<Integer>();
+		List<Integer> Ties = new ArrayList<Integer>();
+		List<Long> BlackAvgPlayouts = new ArrayList<Long>();
+		List<Long> WhiteAvgPlayouts = new ArrayList<Long>();
+			
+		for(int blkTPM = 1; blkTPM <= 8; blkTPM = blkTPM * 2) {
+			for(int whtTPM = 1; whtTPM <= 8; whtTPM = whtTPM * 2) {
+				if(blkTPM != whtTPM) {
+					blackPAverages = 0;
+					whitePAverages = 0;
+					Player black = new Player(blkTPM);
+					Player white = new Player(whtTPM);
+					int blacksum = 0;
+					int whitesum = 0;
+					int ties = 0;
+					int win;
+					for (int i = 0; i < 100; i++) {
+						System.out.println("\nGame number " + (i + 1) 
+								+ "\nBlack Time: " + blkTPM + " seconds,\nWhite Time: " + whtTPM + " seconds.");
+						win = runGame(black, white);
+						if (win == Board.BLACK) {
+							blacksum += 1;
+						} else if (win == Board.VACANT) {
+							ties += 1;
+						} else {
+							whitesum += 1;
+						}
+					}
+					BlackWins.add(blacksum);
+					WhiteWins.add(whitesum);
+					Ties.add(ties);
+					BlackAvgPlayouts.add(blackPAverages / 100);
+					WhiteAvgPlayouts.add(whitePAverages / 100);
+				}
+			}
+		}
+
+		System.out.println("\nAll out of 100 games\n");
+		System.out.println("Black 1 vs White 2: ");
+		System.out.println("Black Wins: " + BlackWins.get(0));
+		System.out.println("White Wins: " + WhiteWins.get(0));
+		System.out.println("Ties: " + Ties.get(0));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(0));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(0));
+		System.out.println();
+		System.out.println("Black 1 vs White 4: ");
+		System.out.println("Black Wins: " + BlackWins.get(1));
+		System.out.println("White Wins: " + WhiteWins.get(1));
+		System.out.println("Ties: " + Ties.get(1));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(1));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(1));
+		System.out.println();
+		System.out.println("Black 1 vs White 8: ");
+		System.out.println("Black Wins: " + BlackWins.get(2));
+		System.out.println("White Wins: " + WhiteWins.get(2));
+		System.out.println("Ties: " + Ties.get(2));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(2));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(2));
+		System.out.println();
+		System.out.println("Black 2 vs White 1: ");
+		System.out.println("Black Wins: " + BlackWins.get(3));
+		System.out.println("White Wins: " + WhiteWins.get(3));
+		System.out.println("Ties: " + Ties.get(3));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(3));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(3));
+		System.out.println();
+		System.out.println("Black 2 vs White 4: ");
+		System.out.println("Black Wins: " + BlackWins.get(4));
+		System.out.println("White Wins: " + WhiteWins.get(4));
+		System.out.println("Ties: " + Ties.get(4));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(4));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(4));
+		System.out.println();
+		System.out.println("Black 2 vs White 8: ");
+		System.out.println("Black Wins: " + BlackWins.get(5));
+		System.out.println("White Wins: " + WhiteWins.get(5));
+		System.out.println("Ties: " + Ties.get(5));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(5));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(5));
+		System.out.println();
+		System.out.println("Black 4 vs White 1: ");
+		System.out.println("Black Wins: " + BlackWins.get(6));
+		System.out.println("White Wins: " + WhiteWins.get(6));
+		System.out.println("Ties: " + Ties.get(6));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(6));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(6));
+		System.out.println();
+		System.out.println("Black 4 vs White 2: ");
+		System.out.println("Black Wins: " + BlackWins.get(7));
+		System.out.println("White Wins: " + WhiteWins.get(7));
+		System.out.println("Ties: " + Ties.get(7));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(7));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(7));
+		System.out.println();
+		System.out.println("Black 4 vs White 8: ");
+		System.out.println("Black Wins: " + BlackWins.get(8));
+		System.out.println("White Wins: " + WhiteWins.get(8));
+		System.out.println("Ties: " + Ties.get(8));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(8));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(8));
+		System.out.println();
+		System.out.println("Black 8 vs White 1: ");
+		System.out.println("Black Wins: " + BlackWins.get(9));
+		System.out.println("White Wins: " + WhiteWins.get(9));
+		System.out.println("Ties: " + Ties.get(9));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(9));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(9));
+		System.out.println();
+		System.out.println("Black 8 vs White 2: ");
+		System.out.println("Black Wins: " + BlackWins.get(10));
+		System.out.println("White Wins: " + WhiteWins.get(10));
+		System.out.println("Ties: " + Ties.get(10));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(10));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(10));
+		System.out.println();
+		System.out.println("Black 8 vs White 4: ");
+		System.out.println("Black Wins: " + BlackWins.get(11));
+		System.out.println("White Wins: " + WhiteWins.get(11));
+		System.out.println("Ties: " + Ties.get(11));
+		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(11));
+		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(11));
+		System.out.println();
+
+		try {
+			File file = new File("SerialResults.txt");
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			OutputStream outStream = new FileOutputStream(file);
+			Writer out = new OutputStreamWriter(outStream);
+			out.write("All out of 100 games\n");
+			out.write("\nBlack 1 vs White 2: ");
+			out.write("\nBlack Wins: " + BlackWins.get(0));
+			out.write("\nWhite Wins: " + WhiteWins.get(0));
+			out.write("\nTies: " + Ties.get(0));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(0));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(0));
+			out.write("\n");
+			out.write("\nBlack 1 vs White 4: ");
+			out.write("\nBlack Wins: " + BlackWins.get(1));
+			out.write("\nWhite Wins: " + WhiteWins.get(1));
+			out.write("\nTies: " + Ties.get(1));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(1));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(1));
+			out.write("\n");
+			out.write("\nBlack 1 vs White 8: ");
+			out.write("\nBlack Wins: " + BlackWins.get(2));
+			out.write("\nWhite Wins: " + WhiteWins.get(2));
+			out.write("\nTies: " + Ties.get(2));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(2));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(2));
+			out.write("\n");
+			out.write("\nBlack 2 vs White 1: ");
+			out.write("\nBlack Wins: " + BlackWins.get(3));
+			out.write("\nWhite Wins: " + WhiteWins.get(3));
+			out.write("\nTies: " + Ties.get(3));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(3));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(3));
+			out.write("\n");
+			out.write("\nBlack 2 vs White 4: ");
+			out.write("\nBlack Wins: " + BlackWins.get(4));
+			out.write("\nWhite Wins: " + WhiteWins.get(4));
+			out.write("\nTies: " + Ties.get(4));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(4));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(4));
+			out.write("\n");
+			out.write("\nBlack 2 vs White 8: ");
+			out.write("\nBlack Wins: " + BlackWins.get(5));
+			out.write("\nWhite Wins: " + WhiteWins.get(5));
+			out.write("\nTies: " + Ties.get(5));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(5));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(5));
+			out.write("\n");
+			out.write("\nBlack 4 vs White 1: ");
+			out.write("\nBlack Wins: " + BlackWins.get(6));
+			out.write("\nWhite Wins: " + WhiteWins.get(6));
+			out.write("\nTies: " + Ties.get(6));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(6));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(6));
+			out.write("\n");
+			out.write("\nBlack 4 vs White 2: ");
+			out.write("\nBlack Wins: " + BlackWins.get(7));
+			out.write("\nWhite Wins: " + WhiteWins.get(7));
+			out.write("\nTies: " + Ties.get(7));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(7));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(7));
+			out.write("\n");
+			out.write("\nBlack 4 vs White 8: ");
+			out.write("\nBlack Wins: " + BlackWins.get(8));
+			out.write("\nWhite Wins: " + WhiteWins.get(8));
+			out.write("\nTies: " + Ties.get(8));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(8));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(8));
+			out.write("\n");
+			out.write("\nBlack 8 vs White 1: ");
+			out.write("\nBlack Wins: " + BlackWins.get(9));
+			out.write("\nWhite Wins: " + WhiteWins.get(9));
+			out.write("\nTies: " + Ties.get(9));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(9));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(9));
+			out.write("\n");
+			out.write("\nBlack 8 vs White 2: ");
+			out.write("\nBlack Wins: " + BlackWins.get(10));
+			out.write("\nWhite Wins: " + WhiteWins.get(10));
+			out.write("\nTies: " + Ties.get(10));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(10));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(10));
+			out.write("\n");
+			out.write("\nBlack 8 vs White 4: ");
+			out.write("\nBlack Wins: " + BlackWins.get(11));
+			out.write("\nWhite Wins: " + WhiteWins.get(11));
+			out.write("\nTies: " + Ties.get(11));
+			out.write("\nBlack Average Playouts: " + BlackAvgPlayouts.get(11));
+			out.write("\nWhite Average Playouts: " + WhiteAvgPlayouts.get(11));
+			out.write("\n");
+			out.close();
+		} catch (Exception e) {
+		}
+	}
 
 	public static int runGame(Player black, Player white) {
 		Board board = new Board();
@@ -238,10 +468,14 @@ public class Othello {
 		for (Long playouts : whiteTurnPlayouts) {
 			whitePlayoutSum += playouts;
 		}
+		long blackPAverage = (long) (blackPlayoutSum / blackTurnPlayouts.size());
+		long whitePAverage = (long) (whitePlayoutSum / whiteTurnPlayouts.size());
+		blackPAverages += blackPAverage;
+		whitePAverages += whitePAverage;
 		System.out.println("Average black playouts per turn: "
-				+ (int) (blackPlayoutSum / blackTurnPlayouts.size()));
+				+ blackPAverage);
 		System.out.println("Average white playouts per turn: "
-				+ (int) (whitePlayoutSum / whiteTurnPlayouts.size()));
+				+ whitePAverage);
 		return winner;
 	}
 
