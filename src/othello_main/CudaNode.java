@@ -35,6 +35,8 @@ public class CudaNode extends SearchNode {
 
 	/** Holds the playout function for multileaf parallelism */
 	protected static CUfunction functionMultiLeaf;
+	
+	protected static int komi;
 
 	/**
 	 * constructer for CudaNode
@@ -64,7 +66,7 @@ public class CudaNode extends SearchNode {
 		playouts += blocksxthreads;
 		board.play(move);
 		int winner;
-		winner = board.getWinner();
+		winner = board.getWinner(komi);
 		if (board.gameOver()) {
 			finalNode = true;
 			if (winner == color) {
@@ -344,6 +346,10 @@ public class CudaNode extends SearchNode {
 			return blocksxthreads - wins;
 		}
 
+	}
+	
+	public static void setKomi(int value){
+		komi = value;
 	}
 
 }

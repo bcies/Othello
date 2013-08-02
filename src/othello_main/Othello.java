@@ -280,14 +280,11 @@ public class Othello {
 		List<Long> WhiteAvgPlayouts = new ArrayList<Long>();
 		
 		Player black = new Player(0.01);
-		black.setCuda(14,512);
 		Player white = new Player(0.01);
-		white.setCuda(14, 512);
 		
 		for(int komi = 5; komi <= 10; komi++) {
 			blackPAverages = 0;
 			whitePAverages = 0;
-			
 			int blacksum = 0;
 			int whitesum = 0;
 			int ties = 0;
@@ -409,6 +406,7 @@ public class Othello {
 	}
 
 	public static int runGame(Player black, Player white, int komi) {
+		CudaNode.setKomi(komi);
 		Board board = new Board();
 		List<Long> blackTurnPlayouts = new ArrayList<Long>();
 		List<Long> whiteTurnPlayouts = new ArrayList<Long>();
