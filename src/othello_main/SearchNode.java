@@ -13,6 +13,7 @@ public class SearchNode {
 	private double winRate;
 	private boolean finalNode;
 	private boolean exhausted;
+	public static int komi;
 	
 	public SearchNode(int move, int color) {
 		this.move = move;
@@ -65,7 +66,7 @@ public class SearchNode {
 		playouts += 1;
 		board.play(move);
 		int winner;
-		winner = board.getWinner();
+		winner = board.getWinner(komi);
 		if (board.gameOver()) {
 			finalNode = true;
 			if (winner == color) {
@@ -80,7 +81,7 @@ public class SearchNode {
 		while (!board.gameOver()) {
 			randMove = (int) (Math.random() * Board.BOARD_AREA);
 			board.play(randMove);
-			winner = board.getWinner();
+			winner = board.getWinner(komi);
 		}
 		if (winner == color) {
 			winRate = (formerPlayouts * winRate + 1.0) / (playouts * 1.0);
@@ -103,6 +104,10 @@ public class SearchNode {
 	
 	public void setFinalNode(boolean value) {
 		finalNode = value;
+	}
+	
+	public static void setKomi(int value){
+		komi = value;
 	}
 	
 	public void setPlayouts(int number) {

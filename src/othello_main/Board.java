@@ -318,8 +318,8 @@ public class Board {
 		return score;
 	}
 	
-	public int getWinner() {
-		int blackScore = getScore(BLACK);
+	public int getWinner(int komi) {
+		int blackScore = getScore(BLACK)+komi;
 		int whiteScore = getScore(WHITE);
 		if(blackScore > whiteScore) {
 			return BLACK;
