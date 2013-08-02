@@ -144,8 +144,8 @@ public class Othello {
 		List<Long> BlackAvgPlayouts = new ArrayList<Long>();
 		List<Long> WhiteAvgPlayouts = new ArrayList<Long>();
 			
-		for(double blkTPM = 0.0625; blkTPM <= 0.5; blkTPM = blkTPM * 2) {
-			for(double whtTPM = 0.0625; whtTPM <= 0.5; whtTPM = whtTPM * 2) {
+		for(double blkTPM = 0.00125; blkTPM <= 0.01; blkTPM = blkTPM * 2) {
+			for(double whtTPM = 0.00125; whtTPM <= 0.01; whtTPM = whtTPM * 2) {
 				if(blkTPM != whtTPM) {
 					blackPAverages = 0;
 					whitePAverages = 0;
@@ -177,84 +177,84 @@ public class Othello {
 		}
 
 		System.out.println("\nAll out of 500 games\n");
-		System.out.println("Black 0.0625 vs White 0.125: ");
+		System.out.println("Black 0.00125 vs White 0.0025: ");
 		System.out.println("Black Wins: " + BlackWins.get(0));
 		System.out.println("White Wins: " + WhiteWins.get(0));
 		System.out.println("Ties: " + Ties.get(0));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(0));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(0));
 		System.out.println();
-		System.out.println("Black 0.0625 vs White 0.25: ");
+		System.out.println("Black 0.00125 vs White 0.0.005: ");
 		System.out.println("Black Wins: " + BlackWins.get(1));
 		System.out.println("White Wins: " + WhiteWins.get(1));
 		System.out.println("Ties: " + Ties.get(1));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(1));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(1));
 		System.out.println();
-		System.out.println("Black 0.0625 vs White 0.5: ");
+		System.out.println("Black 0.00125 vs White 0.01: ");
 		System.out.println("Black Wins: " + BlackWins.get(2));
 		System.out.println("White Wins: " + WhiteWins.get(2));
 		System.out.println("Ties: " + Ties.get(2));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(2));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(2));
 		System.out.println();
-		System.out.println("Black 0.125 vs White 0.0625: ");
+		System.out.println("Black 0.0025 vs White 0.00125: ");
 		System.out.println("Black Wins: " + BlackWins.get(3));
 		System.out.println("White Wins: " + WhiteWins.get(3));
 		System.out.println("Ties: " + Ties.get(3));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(3));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(3));
 		System.out.println();
-		System.out.println("Black 0.125 vs White 0.25: ");
+		System.out.println("Black 0.0025 vs White 0.005: ");
 		System.out.println("Black Wins: " + BlackWins.get(4));
 		System.out.println("White Wins: " + WhiteWins.get(4));
 		System.out.println("Ties: " + Ties.get(4));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(4));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(4));
 		System.out.println();
-		System.out.println("Black 0.125 vs White 0.5: ");
+		System.out.println("Black 0.0025 vs White 0.01: ");
 		System.out.println("Black Wins: " + BlackWins.get(5));
 		System.out.println("White Wins: " + WhiteWins.get(5));
 		System.out.println("Ties: " + Ties.get(5));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(5));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(5));
 		System.out.println();
-		System.out.println("Black 0.25 vs White 0.0625: ");
+		System.out.println("Black 0.005 vs White 0.00125: ");
 		System.out.println("Black Wins: " + BlackWins.get(6));
 		System.out.println("White Wins: " + WhiteWins.get(6));
 		System.out.println("Ties: " + Ties.get(6));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(6));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(6));
 		System.out.println();
-		System.out.println("Black 0.25 vs White 0.125: ");
+		System.out.println("Black 0.005 vs White 0.0025: ");
 		System.out.println("Black Wins: " + BlackWins.get(7));
 		System.out.println("White Wins: " + WhiteWins.get(7));
 		System.out.println("Ties: " + Ties.get(7));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(7));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(7));
 		System.out.println();
-		System.out.println("Black 0.25 vs White 0.5: ");
+		System.out.println("Black 0.005 vs White 0.01: ");
 		System.out.println("Black Wins: " + BlackWins.get(8));
 		System.out.println("White Wins: " + WhiteWins.get(8));
 		System.out.println("Ties: " + Ties.get(8));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(8));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(8));
 		System.out.println();
-		System.out.println("Black 0.5 vs White 0.625: ");
+		System.out.println("Black 0.01 vs White 0.00125: ");
 		System.out.println("Black Wins: " + BlackWins.get(9));
 		System.out.println("White Wins: " + WhiteWins.get(9));
 		System.out.println("Ties: " + Ties.get(9));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(9));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(9));
 		System.out.println();
-		System.out.println("Black 0.5 vs White 0.125: ");
+		System.out.println("Black 0.01 vs White 0.0025: ");
 		System.out.println("Black Wins: " + BlackWins.get(10));
 		System.out.println("White Wins: " + WhiteWins.get(10));
 		System.out.println("Ties: " + Ties.get(10));
 		System.out.println("Black Average Playouts: " + BlackAvgPlayouts.get(10));
 		System.out.println("White Average Playouts: " + WhiteAvgPlayouts.get(10));
 		System.out.println();
-		System.out.println("Black 0.5 vs White 0.25: ");
+		System.out.println("Black 0.01 vs White 0.005: ");
 		System.out.println("Black Wins: " + BlackWins.get(11));
 		System.out.println("White Wins: " + WhiteWins.get(11));
 		System.out.println("Ties: " + Ties.get(11));
