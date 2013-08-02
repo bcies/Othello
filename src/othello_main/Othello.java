@@ -407,6 +407,7 @@ public class Othello {
 
 	public static int runGame(Player black, Player white, int komi) {
 		CudaNode.setKomi(komi);
+		SearchNode.setKomi(komi);
 		Board board = new Board();
 		List<Long> blackTurnPlayouts = new ArrayList<Long>();
 		List<Long> whiteTurnPlayouts = new ArrayList<Long>();
@@ -473,13 +474,13 @@ public class Othello {
 		}
 //		System.out.println(board);
 		int winner = board.getWinner(komi);
-//		if (winner == Board.BLACK) {
-//			System.out.println("Black won!");
-//		} else if (winner == Board.WHITE) {
-//			System.out.println("White won!");
-//		} else {
-//			System.out.println("It's a tie!");
-//		}
+		if (winner == Board.BLACK) {
+			System.out.println("Black won!");
+		} else if (winner == Board.WHITE) {
+			System.out.println("White won!");
+		} else {
+			System.out.println("It's a tie!");
+		}
 		
 //		System.out.println("Black points: " + board.getScore(Board.BLACK));
 //		System.out.println("White points: " + board.getScore(Board.WHITE));
